@@ -25,10 +25,10 @@ pipeline {
 
             }
         }
-
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh '''sleep 10000'''
                     sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
