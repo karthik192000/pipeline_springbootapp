@@ -19,6 +19,7 @@ pipeline {
         stage('Create Docker Image'){
             steps{
                 sh '''
+                sudo apt-get update -y apt-get install docker -y
                 docker build -t springbootapp .
                 '''
             }
