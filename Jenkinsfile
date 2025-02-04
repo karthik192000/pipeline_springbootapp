@@ -1,5 +1,8 @@
 pipeline {
 
+    tools{
+        docker
+    }
     agent {
         label 'docker_agent_java'
     }
@@ -19,8 +22,9 @@ pipeline {
         stage('Create Docker Image'){
             steps{
                 sh '''
-                sudo apt-get update -y apt-get install docker -y
-                docker build -t springbootapp .
+                docker login -u bankapurkarthik@gmail.com -p Gennext@2023
+                docker build -t karthik192000/springbootapp .
+                docker push karthik192000/springbootapp
                 '''
             }
         }
