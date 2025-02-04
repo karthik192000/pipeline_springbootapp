@@ -1,5 +1,9 @@
 pipeline {
 
+    agent {
+        label 'docker_agent_java'
+    }
+
     stages{
         stage ('Git Checkout'){
 
