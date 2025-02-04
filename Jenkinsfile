@@ -1,7 +1,7 @@
 pipeline {
 
     tools{
-        docker '27.4.0'
+        dockerTool '27.4.0'
     }
     agent {
         label 'docker_agent_java'
