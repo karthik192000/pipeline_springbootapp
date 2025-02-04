@@ -29,11 +29,11 @@ pipeline {
             steps{
 
                 
-                withCredentials([usernamePassword(credentialsId:"$DOCKER_CREDS_ID",usernameVariable: "$DOCKER_USER", passwordVariable: "$DOCKER_PASS")])
+                withCredentials([usernamePassword(credentialsId:"$DOCKER_CREDS_ID",usernameVariable: 'DOCKER_USER', passwordVariable: '$DOCKER_PASS')])
                 sh '''
                 
                 docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-                docker build -t karthikb21/springbootapp .
+                docker build -t "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}" .
                  '''
         
             }
