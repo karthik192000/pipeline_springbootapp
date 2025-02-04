@@ -25,17 +25,22 @@ pipeline {
 
             }
         }
-        stage('Create Docker Image'){
-            steps{
 
-                script{
-                withCredentials([usernamePassword(credentialsId:"$DOCKER_CREDS_ID",usernameVariable: 'DOCKER_USER', passwordVariable: '$DOCKER_PASS')])
-                sh '''
-                
-                docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-                docker build -t "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}" .
-                 '''
-        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
+            }
+        }
+
+
+        stage('Login to Docker Registry') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
+                    }
                 }
             }
         }
