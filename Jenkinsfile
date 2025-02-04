@@ -29,6 +29,7 @@ pipeline {
             steps {
                 script {
                     sh "systemctl start docker"
+                    sh "systemctl enable docker"
                     sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
