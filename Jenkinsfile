@@ -17,7 +17,7 @@ pipeline {
         // }
         stage('Create Docker Image'){
             steps{
-                sh '''sleep 100'''
+                sh '''sleep 1000'''
             }
         }
     }    
