@@ -1,8 +1,4 @@
 pipeline {
-
-    tools{
-        dockerTool
-    }
     agent {
         label 'docker_agent_java'
     }
@@ -12,13 +8,13 @@ pipeline {
                 git branch: 'master', url:'https://github.com/karthik192000/SpringBootApp.git'
             }
         }
-        stage ('Build'){
-            steps{
-                sh '''
-                mvn clean install
-                '''
-            }
-        }
+        // stage ('Build'){
+        //     steps{
+        //         sh '''
+        //         mvn clean install
+        //         '''
+        //     }
+        // }
         stage('Create Docker Image'){
             steps{
                 sh '''
