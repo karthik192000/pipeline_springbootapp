@@ -17,9 +17,7 @@ pipeline {
         // }
         stage('Create Docker Image'){
             steps{
-                script{
-                    docker.build("springbootapp")
-                }
+                sh '''sleep 100'''
             }
         }
     }    
