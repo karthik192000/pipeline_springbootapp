@@ -18,7 +18,7 @@ pipeline {
         stage('Create Docker Image'){
             steps{
                 sh '''
-                apt-get install docker -y
+                export PATH=$PATH:/usr/bin
                 docker login -u bankapurkarthik@gmail.com -p Gennext@2023
                 docker build -t karthik192000/springbootapp .
                 docker push karthik192000/springbootapp
