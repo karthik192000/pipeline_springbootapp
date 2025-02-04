@@ -28,6 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh "echo systemctl status docker"
                     sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
