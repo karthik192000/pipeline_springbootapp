@@ -9,7 +9,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'springbootapp'
-        IMAGE_TAG = env.BUILD_ID
+        IMAGE_TAG = "$BUILD_ID"
         DOCKER_REGISTRY = 'docker.io/karthikb21'
         DOCKER_CREDS_ID = 'docker_registry_creds'
     }
