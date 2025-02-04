@@ -17,12 +17,9 @@ pipeline {
         // }
         stage('Create Docker Image'){
             steps{
-                sh '''
-                export PATH=$PATH:/usr/bin
-                docker login -u bankapurkarthik@gmail.com -p Gennext@2023
-                docker build -t karthik192000/springbootapp .
-                docker push karthik192000/springbootapp
-                '''
+                script{
+                    docker.build("springbootapp")
+                }
             }
         }
     }    
