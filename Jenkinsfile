@@ -28,7 +28,7 @@ pipeline {
         stage('Create Docker Image'){
             steps{
 
-                
+                script{
                 withCredentials([usernamePassword(credentialsId:"$DOCKER_CREDS_ID",usernameVariable: 'DOCKER_USER', passwordVariable: '$DOCKER_PASS')])
                 sh '''
                 
@@ -36,6 +36,7 @@ pipeline {
                 docker build -t "${DOCKER_REGISTRY}"/"${IMAGE_NAME}":"${IMAGE_TAG}" .
                  '''
         
+                }
             }
         }
     }    
