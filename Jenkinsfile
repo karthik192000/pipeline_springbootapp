@@ -1,8 +1,4 @@
 pipeline {
-
-    tools {
-        docker 
-    }
     agent {
         label 'docker_agent_java'
     }
