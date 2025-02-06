@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     
-                    sh "sudo podman build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "sudo podman build --privileged -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
