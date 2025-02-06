@@ -25,40 +25,24 @@ pipeline {
 
             }
         }
-
-
-        stage('Get Sudo'){
-            steps{
-                sh "apt-get install sudo -y"
-            }
-        }
-
-        stage('Get Podman'){
-            steps{
-                sh "apt-get install podman -y"
-                sh "sudo pkill -9 podman"
-                sh "sudo podman system reset  # Resets Podman storage & state"
-            }
-        }        
         stage('Build Docker Image') {
             steps {
                 script {
-                    
-                    sh "sudo podman build --privileged -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
 
 
-        stage('Login to Docker Registry') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | podman login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
-                    }
-                }
-            }
-        }
+        // stage('Login to Docker Registry') {
+        //     steps {
+        //         script {
+        //             withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+        //                 sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
+        //             }
+        //         }
+        //     }
+        // }
     }    
     
 }
