@@ -65,7 +65,7 @@ pipeline {
             }
         }
 
-        stage {
+        stage('Clean up') {
             steps{
             sh "docker --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
             }
