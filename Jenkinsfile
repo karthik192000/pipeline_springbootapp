@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     
-                    sh "podman build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "sudo podman build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
