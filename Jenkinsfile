@@ -28,6 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh "docker run -d --name dind-container -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker --privileged docker:latest"
                     sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
