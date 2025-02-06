@@ -25,11 +25,17 @@ pipeline {
 
             }
         }
+
+        stage('Get Podman'){
+            steps{
+                sh "apt-get install podman -y"
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker run -d --name dind-container -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker --privileged docker:latest"
-                    sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                    
+                    sh "podman build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
@@ -39,7 +45,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
+                        sh "echo $DOCKER_PASS | podman login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
                     }
                 }
             }
