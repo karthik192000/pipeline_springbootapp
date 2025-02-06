@@ -62,9 +62,9 @@ pipeline {
             //         }
             //     }
             // }
-
-
-            sh "docker --config /root/.docker/config.json --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 push karthikb21/${IMAGE_NAME}:${IMAGE_TAG}"
+        steps{
+                        sh "docker --config /root/.docker/config.json --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 push karthikb21/${IMAGE_NAME}:${IMAGE_TAG}"
+        }
         }
     }    
     
