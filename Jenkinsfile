@@ -31,6 +31,12 @@ pipeline {
                 sh "apt-get install podman -y"
             }
         }
+
+        stage('Get Sudo'){
+            steps{
+                sh "apt-get install sudo -y"
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
