@@ -36,7 +36,8 @@ pipeline {
         stage('Get Podman'){
             steps{
                 sh "apt-get install podman -y"
-                sh "sudo systemctl restart podman"
+                sh "sudo pkill -9 podman"
+                sh "sudo podman system reset  # Resets Podman storage & state"
             }
         }        
         stage('Build Docker Image') {
