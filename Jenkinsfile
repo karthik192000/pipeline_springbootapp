@@ -49,9 +49,9 @@ pipeline {
                 '''
 
                 script{
-                    withCredentials([usernamePassword(credentialsId:"${AWS_CREDS_ID}",userNameVariable: 'AWS_ACCESS_KEY',passwordVariable: 'AWS_SECRET_KEY')]){
-                        sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY}"
-                        sh "aws configure set aws_secret_access_key ${AWS_SECRET_KEY}"
+                    withCredentials([usernamePassword(credentialsId:"${AWS_CREDS_ID}",userNameVariable: 'AWS_USER',passwordVariable: 'AWS_PASS')]){
+                        sh "aws configure set aws_access_key_id ${AWS_USER}"
+                        sh "aws configure set aws_secret_access_key ${AWS_PASS}"
                         sh "aws configure set region ap-south-1"
                     }
                 }
