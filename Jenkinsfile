@@ -6,7 +6,10 @@ pipeline {
     environment {
         IMAGE_NAME = 'springbootapp'
         IMAGE_TAG = "$BUILD_ID"
-        DOCKER_REGISTRY = 'docker.io/karthikb21'
+        DOCKER_HOST = "socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376"
+        DOCKER_REGISTRY = "730335239716.dkr.ecr.ap-south-1.amazonaws.com"
+        DOCKER_NAMESPACE = "karthikb21"
+        DOCKER_REPO = "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/${IMAGE_NAME}"
         DOCKER_CREDS_ID = 'docker_registry_creds'
     }
     stages{
@@ -58,8 +61,8 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "docker logout"
-                        sh "echo $DOCKER_PASS | docker --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 login -u $DOCKER_USER --password-stdin docker.io"
-                        sh "docker --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 -D push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                        sh "echo $DOCKER_PASS | aws ecr get-login-password --region ap-south-1 | docker --host ${DOCKER_HOST}login --username AWS --password-stdin ${DOCKER_REGISTRY}"
+                        sh "docker --host ${DOCKER_HOST} -D push ${DOCKER_REPO}:${IMAGE_TAG}"
                     }
                 }
             }
@@ -67,7 +70,7 @@ pipeline {
 
         stage('Clean up') {
             steps{
-            sh "docker --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+            sh "docker --host ${DOCKER_HOST} rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
             }
         }
     }    
