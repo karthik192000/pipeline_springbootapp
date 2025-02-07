@@ -11,6 +11,8 @@ pipeline {
         DOCKER_NAMESPACE = "karthikb21"
         DOCKER_REPO = "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/${IMAGE_NAME}"
         DOCKER_CREDS_ID = 'docker_registry_creds'
+        AWS_CREDS_ID = "aws_jenkins_access"
+
     }
     stages{
         stage('Git Checkout'){
@@ -45,6 +47,14 @@ pipeline {
                     ./aws/install
                     aws --version
                 '''
+
+                script{
+                    withCredentials([usernamePassword(credentialsId:"${AWS_CREDS_ID}",userNameVariable: 'AWS_ACCESS_KEY',passwordVariable: 'AWS_SECRET_KEY')]){
+                        sh "aws configure set aws_access_key_id $AWS_ACCESS_KEY"
+                        sh "aws configure set aws_secret_access_key $AWS_SECRET_KEY"
+                        sh "aws configure set region ap-south-1"
+                    }
+                }
             }
 
         }
