@@ -33,7 +33,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker --host ${DOCKER_HOST} build -t ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker --host ${DOCKER_HOST} build -t ${DOCKER_REPO}:${IMAGE_TAG} ."
                 }
             }
         }
@@ -95,7 +95,7 @@ pipeline {
 
         stage('Clean up') {
             steps{
-            sh "docker --host ${DOCKER_HOST} rmi ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_TAG}"
+            sh "docker --host ${DOCKER_HOST} rmi ${DOCKER_REPO}:${IMAGE_TAG}"
             }
         }
     }    
