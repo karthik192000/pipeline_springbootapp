@@ -6,7 +6,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'springbootapp'
         IMAGE_TAG = "$BUILD_ID"
-        DOCKER_HOST = "socatnlb-b20e4b1d9c152ab5.elb.ap-south-1.amazonaws.com"
+        DOCKER_HOST = "socatnlb-b20e4b1d9c152ab5.elb.ap-south-1.amazonaws.com:80"
         DOCKER_REGISTRY = "730335239716.dkr.ecr.ap-south-1.amazonaws.com"
         DOCKER_NAMESPACE = "karthikb21"
         DOCKER_REPO = "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/${IMAGE_NAME}"
