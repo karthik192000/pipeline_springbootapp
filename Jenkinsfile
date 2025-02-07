@@ -36,6 +36,16 @@ pipeline {
             }
         }
 
+        stage('Install AWS CLI') {
+            steps {
+                sh '''
+                    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                    unzip awscliv2.zip
+                    sudo ./aws/install
+                    aws --version
+                '''
+            }
+
 
         // stage('Login to Docker Registry') {
         //     steps {
@@ -58,6 +68,7 @@ pipeline {
             // }
 
             steps{
+
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "docker logout"
