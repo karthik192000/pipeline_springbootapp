@@ -11,7 +11,7 @@ pipeline {
         DOCKER_NAMESPACE = "karthikb21"
         DOCKER_REPO = "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/${IMAGE_NAME}"
         DOCKER_CREDS_ID = 'docker_registry_creds'
-        AWS_CREDS_ID = "aws_jenkins_access"
+        AWS_CREDS_ID = "aws_creds"
 
     }
     stages{
