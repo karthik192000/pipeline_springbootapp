@@ -89,7 +89,7 @@ pipeline {
         }
 
 
-        stgae('Update Task Definition'){
+        stage('Update Task Definition'){
             steps{
                 def taskDefinition = sh(script: 'aws ecs describe-task-definition --task-definition ${TASK_DEFINITION}', returnStdout: true).trim()
                 print(taskDefinition)
