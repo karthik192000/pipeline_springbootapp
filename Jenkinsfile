@@ -10,6 +10,7 @@ pipeline {
         DOCKER_REGISTRY = "730335239716.dkr.ecr.ap-south-1.amazonaws.com"
         DOCKER_NAMESPACE = "karthikb21"
         DOCKER_REPO = "${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/${IMAGE_NAME}"
+        TASK_DEFINITION = "springbootapp_task_definition"
         DOCKER_CREDS_ID = 'docker_registry_creds'
         AWS_CREDS_ID = "aws_creds"
 
@@ -84,6 +85,14 @@ pipeline {
             steps{
                 sh "aws ecr get-login-password --region ap-south-1 | docker --host ${DOCKER_HOST} login --username AWS --password-stdin ${DOCKER_REGISTRY}"
                 sh "docker --host ${DOCKER_HOST} -D push ${DOCKER_REPO}:${IMAGE_TAG}"
+            }
+        }
+
+
+        stgae('Update Task Definition'){
+            steps{
+                def taskDefinition = sh(script: 'aws ecs describe-task-definition --task-definition ${TASK_DEFINITION}', returnStdout: true).trim()
+                print(taskDefinition)
             }
         }
     }
