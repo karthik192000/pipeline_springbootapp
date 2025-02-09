@@ -13,6 +13,9 @@ pipeline {
         TASK_DEFINITION = "springbootapp_task_definition"
         DOCKER_CREDS_ID = 'docker_registry_creds'
         AWS_CREDS_ID = "aws_creds"
+        ECS_CLUSTER = "DevCluster"
+        ECS_SERVICE = "SpringBootApp"
+        AWS_REGION = "ap-south-1"
 
     }
     stages{
@@ -94,6 +97,36 @@ pipeline {
                 script{
                     def taskDefinition = sh(script: 'aws ecs describe-task-definition --task-definition ${TASK_DEFINITION}', returnStdout: true).trim()
                     print(taskDefinition)
+
+                     taskDefinition.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}"
+                    
+                    // Remove fields that cannot be included in new task definition
+                    taskDef.remove('taskDefinitionArn')
+                    taskDef.remove('revision')
+                    taskDef.remove('status')
+                    taskDef.remove('requiresAttributes')
+                    taskDef.remove('compatibilities')
+
+                    // Register new task definition
+
+                    def newTaskDefinition = sh(script: 'aws ecs register-task-definition --cli-input-json \'${taskDef}\'', returnStdout: true).trim();
+
+                    env.NEW_TASK_DEFINITION = newTaskDefinition.taskDefinition.taskDefinitionArn
+                }
+            }
+        }
+
+        stage('Deploy Service'){
+            steps{
+                script{
+                    sh "aws ecs update-service --cluster ${ECS_CLUSTER} --service ${ECS_SERVICE} --task-definition ${NEW_TASK_DEFINITION} --region ${AWS_REGION} --desired-count=1 --force-new-deployment"
+                                        // Wait for service stability
+                    sh """
+                        aws ecs wait services-stable \
+                            --cluster ${ECS_CLUSTER} \
+                            --services ${ECS_SERVICE} \
+                            --region ${AWS_REGION}
+                    """
                 }
             }
         }
