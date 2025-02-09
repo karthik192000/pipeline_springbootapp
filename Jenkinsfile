@@ -113,7 +113,7 @@ pipeline {
 
                     env.NEW_TASK_DEFINITION_JSON = writeJSON(json: taskDefJson, returnText: true)
 
-                    echo ${NEW_TASK_DEFINITION_JSON}
+                    echo "${NEW_TASK_DEFINITION_JSON}"
 
                     // Register new task definition
 
