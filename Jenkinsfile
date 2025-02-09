@@ -121,7 +121,7 @@ pipeline {
 
                     def newTaskDefinition = sh(script: "aws ecs register-task-definition --cli-input-json '${NEW_TASK_DEFINITION_JSON}'", returnStdout: true).trim();
                     def newtaskDef = readJSON text: newTaskDefinition
-                    env.NEW_TASK_DEFINITION = newTaskDef.taskDefinitionArn
+                    env.NEW_TASK_DEFINITION = newtaskDef.taskDefinitionArn
                     echo "${NEW_TASK_DEFINITION}"
                 }
             }
