@@ -86,7 +86,8 @@ pipeline {
                 sh "docker --host ${DOCKER_HOST} -D push ${DOCKER_REPO}:${IMAGE_TAG}"
             }
         }
-
+    }
+    
         post {
             always {
                 script {
@@ -100,7 +101,6 @@ pipeline {
             failure {
                 echo "Build Failed"
             }
-        }
-    }    
+        }        
     
 }
