@@ -111,6 +111,10 @@ pipeline {
                     taskDefJson.remove('requiresAttributes')
                     taskDefJson.remove('compatibilities')
 
+                    env.NEW_TASK_DEFINITION_JSON = writeJSON(json: taskDefJson, returnText: true)
+
+                    echo ${NEW_TASK_DEFINITION_JSON}
+
                     // Register new task definition
 
                     def newTaskDefinition = sh(script: 'aws ecs register-task-definition --cli-input-json \'${taskDefJson}\'', returnStdout: true).trim();
