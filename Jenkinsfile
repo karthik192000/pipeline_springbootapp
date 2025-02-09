@@ -99,7 +99,8 @@ pipeline {
                     print(taskDefinition)
 
 
-                    def taskDefJson = (readJSON text: taskDefinition).taskDefinition
+                    def taskDef = readJSON text: taskDefinition
+                    def taskDefJson = taskDef.taskDefinition
 
                     taskDefJson.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}"
                     
