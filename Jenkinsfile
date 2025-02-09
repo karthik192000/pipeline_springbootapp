@@ -102,7 +102,7 @@ pipeline {
                     def taskDef = readJSON text: taskDefinition
                     def taskDefJson = taskDef.taskDefinition
 
-                    taskDefJson.containerDefinitions[0].image = "${DOCKER_REPO}" + ":${IMAGE_TAG}"
+                    taskDefJson.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}".toString()
                     
                     // Remove fields that cannot be included in new task definition
                     taskDefJson.remove('taskDefinitionArn')
