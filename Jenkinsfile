@@ -82,14 +82,8 @@ pipeline {
             // }
 
             steps{
-
-                script {
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "docker logout"
-                        sh "echo $DOCKER_PASS | aws ecr get-login-password --region ap-south-1 | docker --host ${DOCKER_HOST} login --username AWS --password-stdin ${DOCKER_REGISTRY}"
-                        sh "docker --host ${DOCKER_HOST} -D push ${DOCKER_REPO}:${IMAGE_TAG}"
-                    }
-                }
+                sh "aws ecr get-login-password --region ap-south-1 | docker --host ${DOCKER_HOST} login --username AWS --password-stdin ${DOCKER_REGISTRY}"
+                sh "docker --host ${DOCKER_HOST} -D push ${DOCKER_REPO}:${IMAGE_TAG}"
             }
         }
 
