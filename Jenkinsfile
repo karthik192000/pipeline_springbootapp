@@ -87,9 +87,18 @@ pipeline {
             }
         }
 
-        stage('Clean up') {
-            steps{
-            sh "docker --host ${DOCKER_HOST} rmi ${DOCKER_REPO}:${IMAGE_TAG}"
+        post {
+            always {
+                script {
+                    sh "docker --host ${DOCKER_HOST} rmi ${DOCKER_REPO}:${IMAGE_TAG}"
+                }
+            }
+
+            success{
+                echo "Build Success"
+            }
+            failure {
+                echo "Build Failed"
             }
         }
     }    
