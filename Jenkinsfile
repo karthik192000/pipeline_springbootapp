@@ -98,18 +98,21 @@ pipeline {
                     def taskDefinition = sh(script: 'aws ecs describe-task-definition --task-definition ${TASK_DEFINITION}', returnStdout: true).trim()
                     print(taskDefinition)
 
-                     taskDefinition.taskDefinition.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}"
+
+                    def taskDefJson = (readJSON text: taskDefinition).taskDefinition
+
+                    taskDefJson.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}"
                     
                     // Remove fields that cannot be included in new task definition
-                    taskDef.remove('taskDefinitionArn')
-                    taskDef.remove('revision')
-                    taskDef.remove('status')
-                    taskDef.remove('requiresAttributes')
-                    taskDef.remove('compatibilities')
+                    taskDefJson.remove('taskDefinitionArn')
+                    taskDefJson.remove('revision')
+                    taskDefJson.remove('status')
+                    taskDefJson.remove('requiresAttributes')
+                    taskDefJson.remove('compatibilities')
 
                     // Register new task definition
 
-                    def newTaskDefinition = sh(script: 'aws ecs register-task-definition --cli-input-json \'${taskDef}\'', returnStdout: true).trim();
+                    def newTaskDefinition = sh(script: 'aws ecs register-task-definition --cli-input-json \'${taskDefJson}\'', returnStdout: true).trim();
 
                     env.NEW_TASK_DEFINITION = newTaskDefinition.taskDefinition.taskDefinitionArn
                 }
