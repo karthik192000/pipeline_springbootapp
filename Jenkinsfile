@@ -98,7 +98,7 @@ pipeline {
                     def taskDefinition = sh(script: 'aws ecs describe-task-definition --task-definition ${TASK_DEFINITION}', returnStdout: true).trim()
                     print(taskDefinition)
 
-                     taskDefinition.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}"
+                     taskDefinition.taskDefinition.containerDefinitions[0].image = "${DOCKER_REPO}:${IMAGE_TAG}"
                     
                     // Remove fields that cannot be included in new task definition
                     taskDef.remove('taskDefinitionArn')
