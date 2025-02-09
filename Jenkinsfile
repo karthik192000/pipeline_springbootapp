@@ -110,6 +110,8 @@ pipeline {
                     taskDefJson.remove('status')
                     taskDefJson.remove('requiresAttributes')
                     taskDefJson.remove('compatibilities')
+                    taskDefJson.remove('registeredAt')
+                    taskDefJson.remove('registeredBy')
 
                     env.NEW_TASK_DEFINITION_JSON = writeJSON(json: taskDefJson, returnText: true)
 
