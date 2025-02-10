@@ -42,18 +42,8 @@ pipeline {
             }
         }
 
-        stage('Install AWS CLI') {
+        stage('Configure AWS CLI') {
             steps {
-
-                // Skip AWS CLI install as new agent has it pre-installed
-                // sh '''
-                //     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                //     apt-get install -y unzip
-                //     unzip awscliv2.zip
-                //     ./aws/install
-                //     aws --version
-                // '''
-
                 script{
                         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
                             credentialsId: "${AWS_CREDS_ID}",
@@ -66,27 +56,7 @@ pipeline {
 
         }
 
-
-        // stage('Login to Docker Registry') {
-        //     steps {
-        //         script {
-        //             withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-        //                 sh "echo $DOCKER_PASS | docker --host socatnlb-0ea57a52100e6e75.elb.ap-south-1.amazonaws.com:2376 login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
-        //             }
-        //         }
-        //     }
-        // }
-
-
         stage('Push Image to Registry') {
-            // steps {
-            //     script {
-            //         withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-            //             sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin ${DOCKER_REGISTRY}"
-            //         }
-            //     }
-            // }
-
             steps{
                 sh "aws ecr get-login-password --region ap-south-1 | docker --host ${DOCKER_HOST} login --username AWS --password-stdin ${DOCKER_REGISTRY}"
                 sh "docker --host ${DOCKER_HOST} -D push ${DOCKER_REPO}:${IMAGE_TAG}"
