@@ -24,7 +24,7 @@ pipeline {
                 
                echo "${params.Branch}"
             
-                git branch: "${params.Branch}", url:'https://github.com/karthik192000/SpringBootApp.git'
+                git branch: 'dev', url:'https://github.com/karthik192000/SpringBootApp.git'
             }
         }
         stage ('Maven Build Jar') {
