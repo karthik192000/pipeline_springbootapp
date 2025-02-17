@@ -23,7 +23,7 @@ pipeline {
             steps{
                 sh ''
 
-                    echo ${params.Branch}
+                    echo "${params.Branch}"
                 ''
                 git branch: 'master', url:'https://github.com/karthik192000/SpringBootApp.git'
             }
